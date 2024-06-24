@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Form,
   FormControl,
@@ -9,8 +10,9 @@ import {
 import { useForm } from "react-hook-form";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import axios from "axios";
 
-export const InputForm = () => {
+export const TestForm = () => {
   const form = useForm({
     defaultValues: {
       email: "",
@@ -18,8 +20,10 @@ export const InputForm = () => {
     },
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
+    const response = await axios.post("/api/user", data);
     console.log("data", data);
+    console.log("res", response);
   };
 
   return (
@@ -29,7 +33,7 @@ export const InputForm = () => {
           <FormField
             name="email"
             control={form.control}
-            render={({ ...field }) => (
+            render={({ field }) => (
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
@@ -41,7 +45,7 @@ export const InputForm = () => {
           <FormField
             name="name"
             control={form.control}
-            render={({ ...field }) => (
+            render={({ field }) => (
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
