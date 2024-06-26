@@ -2,8 +2,10 @@
 
 import * as z from "zod";
 import axios from "axios";
+import { toast } from "sonner";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "@/components/ui/button";
@@ -23,6 +25,7 @@ const FormSchema = z.object({
 });
 
 export const SignUpForm = () => {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -30,7 +33,18 @@ export const SignUpForm = () => {
   });
 
   const onSubmit = (values: z.infer<typeof FormSchema>) => {
-    console.log("values", values);
+    startTransition(async () => {
+      const response = await axios
+        .post("/api/signup", values)
+        .catch((error) => {
+          toast.error("회원가입에 실패했습니다.");
+        });
+      if (response?.status === 200) {
+        toast.success("회원가입을 축하합니다.");
+        router.replace("/");
+      }
+      console.log("response", response);
+    });
   };
 
   return (
@@ -47,6 +61,7 @@ export const SignUpForm = () => {
                   <FormLabel>이메일</FormLabel>
                   <FormControl>
                     <Input
+                      disabled={isPending}
                       placeholder="이메일을 입력하세요."
                       type="email"
                       {...field}
@@ -63,6 +78,7 @@ export const SignUpForm = () => {
                   <FormLabel>이름</FormLabel>
                   <FormControl>
                     <Input
+                      disabled={isPending}
                       placeholder="이름을 입력하세요."
                       type="text"
                       {...field}
@@ -79,6 +95,7 @@ export const SignUpForm = () => {
                   <FormLabel>비밀번호</FormLabel>
                   <FormControl>
                     <Input
+                      disabled={isPending}
                       placeholder="비밀번호를 입력하세요."
                       type="password"
                       {...field}
@@ -88,7 +105,9 @@ export const SignUpForm = () => {
               )}
             />
           </div>
-          <Button className="my-8 w-full">회원가입</Button>
+          <Button className="my-8 w-full" disabled={isPending}>
+            회원가입
+          </Button>
         </form>
       </div>
     </Form>
