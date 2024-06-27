@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 import { Loader2 } from "lucide-react";
+import { signin } from "@/actions/signin";
 
 const FormSchema = z.object({
   email: z.string().trim().email(),
@@ -34,7 +35,11 @@ export const SignInForm = () => {
   const [isPending, startTransition] = useTransition();
 
   const onSubmit = (values: z.infer<typeof FormSchema>) => {
-    console.log("submit", values);
+    startTransition(() => {
+      signin(values).then((res) => {
+        console.log("error", res?.error);
+      });
+    });
   };
 
   return (
