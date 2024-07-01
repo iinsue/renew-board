@@ -1,11 +1,11 @@
 "use server";
 
 import * as z from "zod";
-import { AuthError } from "next-auth";
 
 import { signIn } from "@/auth";
 import { LoginSchema } from "@/schema";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { AuthError } from "next-auth";
 
 export const signin = async (values: z.infer<typeof LoginSchema>) => {
   const validatedFields = LoginSchema.safeParse(values);
@@ -15,6 +15,7 @@ export const signin = async (values: z.infer<typeof LoginSchema>) => {
   }
 
   const { email, password } = validatedFields.data;
+
   try {
     await signIn("credentials", {
       email,
@@ -25,10 +26,12 @@ export const signin = async (values: z.infer<typeof LoginSchema>) => {
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
-          return { error: "Invalid credentials!!" };
+          return { error: "Invalid credentials!" };
         default:
-          return { error: "Something went wrong!" };
+          return { error: "비밀번호를 확인해주세요." };
       }
     }
+
+    throw error;
   }
 };

@@ -36,9 +36,7 @@ export const SignInForm = () => {
 
   const onSubmit = (values: z.infer<typeof FormSchema>) => {
     startTransition(() => {
-      signin(values).then((res) => {
-        console.log("error", res?.error);
-      });
+      signin(values);
     });
   };
 
