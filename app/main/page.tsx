@@ -1,5 +1,6 @@
 import { signOut } from "@/auth";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const MainPage = () => {
   return (
@@ -13,6 +14,9 @@ const MainPage = () => {
       >
         <Button>로그아웃</Button>
       </form>
+      <Button asChild className="mt-2">
+        <Link href="/board">게시판</Link>
+      </Button>
     </>
   );
 };
