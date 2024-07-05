@@ -1,47 +1,27 @@
 "use client";
 
-import { LexicalComposer } from "@lexical/react/LexicalComposer";
-import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
-import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
-import { ContentEditable } from "@lexical/react/LexicalContentEditable";
-
-const theme = {
-  text: {
-    bold: "font-bold",
-    italic: "italic",
-    underline: "underline",
-    strikethrough: "line-through",
-  },
-};
-
-const onError = (error: Error) => {
-  console.error(error);
-};
-
-const initialConfig = {
-  namespace: "text-editor",
-  theme,
-  onError,
-};
+import { LexicalEditor } from "@/components/common/text-editor";
+import { Button } from "@/components/ui/button";
+import { EditorState } from "lexical";
+import { useState } from "react";
+import axios from "axios";
 
 export const TextEditor = () => {
+  const [editorState, setEditorState] = useState<string | null>(null);
+  const onChange = (editorState: EditorState) => {
+    setEditorState(JSON.stringify(editorState.toJSON()));
+  };
+  const onClick = async () => {
+    const response = await axios.post("/api/post", {
+      content: editorState,
+    });
+    console.log("response", response);
+  };
+
   return (
     <>
-      <div className="relative rounded-md bg-white">
-        <LexicalComposer initialConfig={initialConfig}>
-          <RichTextPlugin
-            contentEditable={
-              <ContentEditable className="min-h-[450px] w-[400px] resize-none overflow-hidden text-ellipsis p-4 outline-none" />
-            }
-            ErrorBoundary={LexicalErrorBoundary}
-            placeholder={
-              <div className="pointer-events-none absolute left-4 top-4 select-none">
-                Enter some text...
-              </div>
-            }
-          />
-        </LexicalComposer>
-      </div>
+      <LexicalEditor className="h-[500px]" onChange={onChange} />
+      <Button onClick={onClick}>등록</Button>
     </>
   );
 };
