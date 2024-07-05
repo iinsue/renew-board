@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input";
 
 import { Loader2 } from "lucide-react";
 import { signInAction } from "@/actions/sign-in";
+import { toast } from "sonner";
 
 const FormSchema = z.object({
   email: z.string().trim().email(),
@@ -35,8 +36,11 @@ export const SignInForm = () => {
   const [isPending, startTransition] = useTransition();
 
   const onSubmit = (values: z.infer<typeof FormSchema>) => {
-    startTransition(() => {
-      signInAction(values);
+    startTransition(async () => {
+      const response = await signInAction(values);
+      if (response?.error) {
+        toast.error(response.error, { id: "sign-in" });
+      }
     });
   };
 
