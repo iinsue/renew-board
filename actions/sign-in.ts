@@ -1,15 +1,15 @@
 "use server";
 
 import * as z from "zod";
+import { AuthError } from "next-auth";
 
 import { signIn } from "@/auth";
-import { LoginSchema } from "@/schema";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
-import { AuthError } from "next-auth";
 import { getUserByEmail } from "@/data/user";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { SignInFormSchema as FormSchema } from "@/schema";
 
-export const signin = async (values: z.infer<typeof LoginSchema>) => {
-  const validatedFields = LoginSchema.safeParse(values);
+export const signInAction = async (values: z.infer<typeof FormSchema>) => {
+  const validatedFields = FormSchema.safeParse(values);
 
   if (!validatedFields.success) {
     return { error: "Invalid fields!" };

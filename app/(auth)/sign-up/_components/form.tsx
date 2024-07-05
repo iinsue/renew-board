@@ -18,11 +18,7 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 
-const FormSchema = z.object({
-  email: z.string().trim().email({ message: "이메일을 입력하세요." }),
-  name: z.string().min(1, { message: "이름을 입력하세요." }),
-  password: z.string().trim().min(1, { message: "비밀번호를 입력하세요." }),
-});
+import { SignUpFormSchema as FormSchema } from "@/schema";
 
 export const SignUpForm = () => {
   const router = useRouter();

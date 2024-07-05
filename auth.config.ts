@@ -2,7 +2,7 @@ import { NextAuthConfig } from "next-auth";
 import bcrypt from "bcryptjs";
 import Credentials from "next-auth/providers/credentials";
 
-import { LoginSchema } from "@/schema";
+import { SignInFormSchema } from "@/schema";
 import { getUserByEmail } from "@/data/user";
 
 export default {
@@ -10,7 +10,7 @@ export default {
     Credentials({
       async authorize(credentials) {
         // zod 타입 체크
-        const validatedFields = LoginSchema.safeParse(credentials);
+        const validatedFields = SignInFormSchema.safeParse(credentials);
 
         // 타입체크 성공 시 조건
         if (validatedFields.success) {
