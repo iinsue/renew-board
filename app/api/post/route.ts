@@ -24,3 +24,24 @@ export async function POST(req: Request) {
     return new NextResponse("서버 오류", { status: 500 });
   }
 }
+
+export async function GET(req: Request) {
+  try {
+    const user = await userSession();
+    if (!user) {
+      return new NextResponse("로그인 후 이용해주세요", { status: 401 });
+    }
+
+    // 게시글 조회
+    const posts = await db.post.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return NextResponse.json(posts, { status: 200 });
+  } catch (error) {
+    console.log("[게시글 조회 오류]", error);
+    return new NextResponse("서버 오류", { status: 500 });
+  }
+}
