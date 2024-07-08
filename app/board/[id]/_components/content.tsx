@@ -1,30 +1,38 @@
 "use client";
 
+import { LexicalViewer } from "@/components/common/lexical/viewer";
+import { InitialEditorStateType } from "@lexical/react/LexicalComposer";
 import axios from "axios";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Loader2 } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 
-type Post = {
-  id: string;
-  content: string;
-  authorId: string;
-  createdAt: string;
-  updatedAt: string;
+type Props = {
+  postId: string;
 };
 
-export const PostContent = () => {
-  const { id } = useParams();
-  const [post, setPost] = useState<Post>();
+export const PostContent = ({ postId }: Props) => {
+  const [postContent, setPostContent] = useState<InitialEditorStateType>();
+
+  const getPost = useCallback(async () => {
+    const response = await axios.get(`/api/post/${postId}`);
+    if (response.status === 200) {
+      setPostContent(response.data.content);
+    }
+  }, [postId]);
 
   useEffect(() => {
-    axios.get(`/api/post/${id}`).then((res) => {
-      if (res.status === 200) setPost(res.data);
-    });
-  }, [id]);
+    getPost();
+  }, [getPost]);
 
   return (
     <>
-      <div>{post?.content}</div>
+      {postContent ? (
+        <LexicalViewer content={postContent} />
+      ) : (
+        <div className="flex min-h-[450px] w-full items-center justify-center bg-white">
+          <Loader2 className="size-10 animate-spin text-slate-400" />
+        </div>
+      )}
     </>
   );
 };

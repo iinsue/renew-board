@@ -1,11 +1,19 @@
 import { PostContent } from "./_components/content";
 
-const PostDetailPage = () => {
+type Props = {
+  params: {
+    id: string;
+  };
+};
+
+const PostDetailPage = ({ params }: Props) => {
   return (
     <>
-      <div>
-        <h1>Post Detail</h1>
-        <PostContent />
+      <div className="flex min-h-screen flex-col items-center justify-center bg-slate-200">
+        <h1>상세 페이지</h1>
+        <div className="w-[800px]">
+          <PostContent postId={params.id} />
+        </div>
       </div>
     </>
   );
