@@ -1,6 +1,6 @@
 "use client";
 
-import { LexicalEditor } from "@/components/common/text-editor";
+import { LexicalEditor } from "@/components/common/lexical/editor";
 import { Button } from "@/components/ui/button";
 import { EditorState } from "lexical";
 import { useState } from "react";
