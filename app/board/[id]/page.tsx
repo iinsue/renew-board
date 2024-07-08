@@ -1,4 +1,5 @@
-import { PostContent } from "./_components/content";
+import { DeletePostComponent } from "./_components/delete";
+import { PostContent } from "./_components/post";
 
 type Props = {
   params: {
@@ -14,6 +15,7 @@ const PostDetailPage = ({ params }: Props) => {
         <div className="w-[800px]">
           <PostContent postId={params.id} />
         </div>
+        <DeletePostComponent postId={params.id} className="mt-4 w-[200px]" />
       </div>
     </>
   );
