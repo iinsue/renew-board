@@ -2,6 +2,7 @@
 
 import * as z from "zod";
 import Link from "next/link";
+import { toast } from "sonner";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,7 +19,7 @@ import { Input } from "@/components/ui/input";
 
 import { Loader2 } from "lucide-react";
 import { signInAction } from "@/actions/sign-in";
-import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
   email: z.string().trim().email(),
@@ -26,6 +27,7 @@ const FormSchema = z.object({
 });
 
 export const SignInForm = () => {
+  const router = useRouter();
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -48,19 +50,18 @@ export const SignInForm = () => {
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="space-y-4">
-            <h1 className="text-center text-2xl font-bold">로그인</h1>
+          <div className="grid gap-4">
             <FormField
               name="email"
               control={form.control}
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="grid gap-2">
                   <FormLabel>이메일</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       type="email"
-                      placeholder="이메일을 입력해주세요"
+                      placeholder="이메일을 입력하세요."
                       disabled={isPending}
                     />
                   </FormControl>
@@ -71,12 +72,20 @@ export const SignInForm = () => {
               name="password"
               control={form.control}
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>비밀번호</FormLabel>
+                <FormItem className="grid gap-2">
+                  <div className="flex items-center">
+                    <FormLabel>비밀번호</FormLabel>
+                    <Button
+                      className="ml-auto flex h-auto p-0 text-xs text-slate-500 underline underline-offset-4 hover:text-slate-800"
+                      variant="link"
+                    >
+                      비밀번호를 잊으셨나요?
+                    </Button>
+                  </div>
                   <FormControl>
                     <Input
                       type="password"
-                      placeholder="비밀번호를 입력해주세요"
+                      placeholder="비밀번호를 입력하세요."
                       disabled={isPending}
                       {...field}
                     />
@@ -85,20 +94,23 @@ export const SignInForm = () => {
               )}
             />
           </div>
-          <Button className="mt-8 w-full" disabled={isPending}>
-            {isPending && <Loader2 className="mr-2 size-5 animate-spin" />}
-            로그인
-          </Button>
+          <div className="grid gap-2">
+            <Button className="mt-8 w-full" disabled={isPending}>
+              {isPending && <Loader2 className="mr-2 size-5 animate-spin" />}
+              로그인
+            </Button>
+            <Button
+              type="button"
+              className="w-full"
+              disabled={isPending}
+              variant="outline"
+              onClick={() => router.push("/sign-up")}
+            >
+              회원가입
+            </Button>
+          </div>
         </form>
       </Form>
-      <Button
-        asChild
-        className="mt-2 w-full"
-        disabled={isPending}
-        variant="outline"
-      >
-        <Link href="/sign-up">회원가입</Link>
-      </Button>
     </>
   );
 };
