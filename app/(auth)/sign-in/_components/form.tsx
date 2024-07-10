@@ -1,10 +1,10 @@
 "use client";
 
 import * as z from "zod";
-import Link from "next/link";
 import { toast } from "sonner";
-import { useTransition } from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
@@ -17,9 +17,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import { Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { signInAction } from "@/actions/sign-in";
-import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 const FormSchema = z.object({
   email: z.string().trim().email(),
@@ -28,6 +28,9 @@ const FormSchema = z.object({
 
 export const SignInForm = () => {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const [isVisible, setIsVisible] = useState(false);
+
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -35,7 +38,6 @@ export const SignInForm = () => {
       password: "",
     },
   });
-  const [isPending, startTransition] = useTransition();
 
   const onSubmit = (values: z.infer<typeof FormSchema>) => {
     startTransition(async () => {
@@ -76,26 +78,55 @@ export const SignInForm = () => {
                   <div className="flex items-center">
                     <FormLabel>비밀번호</FormLabel>
                     <Button
+                      type="button"
                       className="ml-auto flex h-auto p-0 text-xs text-slate-500 underline underline-offset-4 hover:text-slate-800"
                       variant="link"
                     >
                       비밀번호를 잊으셨나요?
                     </Button>
                   </div>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="비밀번호를 입력하세요."
-                      disabled={isPending}
-                      {...field}
-                    />
-                  </FormControl>
+                  <div className="relative">
+                    <FormControl>
+                      <Input
+                        type={isVisible ? "text" : "password"}
+                        placeholder="비밀번호를 입력하세요."
+                        disabled={isPending}
+                        {...field}
+                      />
+                    </FormControl>
+                    <div
+                      className={cn(
+                        isPending ? "cursor-not-allowed" : "cursor-pointer",
+                        "group absolute right-0 top-0 flex h-full items-center pr-3 text-slate-400",
+                      )}
+                      onClick={() => {
+                        if (isPending) return;
+                        isVisible ? setIsVisible(false) : setIsVisible(true);
+                      }}
+                    >
+                      {isVisible ? (
+                        <EyeOff
+                          className={cn(
+                            "size-5",
+                            isPending === false && "group-hover:text-slate-500",
+                          )}
+                        />
+                      ) : (
+                        <Eye
+                          className={cn(
+                            "size-5",
+                            isPending === false && "group-hover:text-slate-500",
+                          )}
+                        />
+                      )}
+                    </div>
+                  </div>
                 </FormItem>
               )}
             />
           </div>
           <div className="grid gap-2">
-            <Button className="mt-8 w-full" disabled={isPending}>
+            <Button className="mt-8 w-full" disabled={isPending} type="submit">
               {isPending && <Loader2 className="mr-2 size-5 animate-spin" />}
               로그인
             </Button>
