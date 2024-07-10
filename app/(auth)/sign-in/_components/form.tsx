@@ -17,14 +17,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { signInAction } from "@/actions/sign-in";
 import { cn } from "@/lib/utils";
-
-const FormSchema = z.object({
-  email: z.string().trim().email(),
-  password: z.string().trim().min(1),
-});
+import { signInAction } from "@/actions/sign-in";
+import { SignInFormSchema as FormSchema } from "@/schema";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 
 export const SignInForm = () => {
   const router = useRouter();
