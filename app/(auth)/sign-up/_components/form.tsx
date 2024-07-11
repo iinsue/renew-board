@@ -3,7 +3,7 @@
 import * as z from "zod";
 import { toast } from "sonner";
 import { useTransition, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useFormContext, useFormState } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -19,7 +19,7 @@ import {
 
 import { SignUpFormSchema as FormSchema } from "@/schema";
 import { signUpAction } from "@/actions/sign-up";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const SignUpForm = () => {
@@ -30,6 +30,9 @@ export const SignUpForm = () => {
     resolver: zodResolver(FormSchema),
     defaultValues: { email: "", name: "", password: "" },
   });
+
+  // 입력 폼 에러 확인
+  const { errors } = useFormState({ control: form.control });
 
   const onSubmit = (values: z.infer<typeof FormSchema>) => {
     startTransition(async () => {
@@ -57,6 +60,7 @@ export const SignUpForm = () => {
                   <Input
                     disabled={isPending}
                     placeholder="이메일을 입력하세요."
+                    className={cn(errors[field.name] && `ring-1 ring-rose-300`)}
                     type="email"
                     {...field}
                   />
@@ -75,6 +79,7 @@ export const SignUpForm = () => {
                     disabled={isPending}
                     placeholder="이름을 입력하세요."
                     type="text"
+                    className={cn(errors[field.name] && `ring-1 ring-rose-300`)}
                     {...field}
                   />
                 </FormControl>
@@ -93,6 +98,9 @@ export const SignUpForm = () => {
                       disabled={isPending}
                       placeholder="비밀번호를 입력하세요."
                       type={isVisible ? "text" : "password"}
+                      className={cn(
+                        errors[field.name] && `ring-1 ring-rose-300`,
+                      )}
                       {...field}
                     />
                   </FormControl>
@@ -129,6 +137,7 @@ export const SignUpForm = () => {
         </div>
         <div className="mt-4 text-sm">
           <Button className="my-4 w-full" disabled={isPending}>
+            {isPending && <Loader2 className="mr-2 size-4 animate-spin" />}
             회원가입
           </Button>
           <div className="text-center text-slate-500">
