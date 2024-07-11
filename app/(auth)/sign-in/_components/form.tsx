@@ -123,7 +123,7 @@ export const SignInForm = () => {
           </div>
           <div className="grid gap-2">
             <Button className="mt-8 w-full" disabled={isPending} type="submit">
-              {isPending && <Loader2 className="mr-2 size-5 animate-spin" />}
+              {isPending && <Loader2 className="mr-2 size-4 animate-spin" />}
               로그인
             </Button>
             <Button
