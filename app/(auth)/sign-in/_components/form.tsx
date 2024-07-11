@@ -54,7 +54,7 @@ export const SignInForm = () => {
               control={form.control}
               render={({ field }) => (
                 <FormItem className="grid gap-2">
-                  <FormLabel>이메일</FormLabel>
+                  <FormLabel className="text-slate-700">이메일</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -72,7 +72,7 @@ export const SignInForm = () => {
               render={({ field }) => (
                 <FormItem className="grid gap-2">
                   <div className="flex items-center">
-                    <FormLabel>비밀번호</FormLabel>
+                    <FormLabel className="text-slate-700">비밀번호</FormLabel>
                     <Button
                       type="button"
                       className="ml-auto flex h-auto p-0 text-xs text-slate-500 underline underline-offset-4 hover:text-slate-800"
