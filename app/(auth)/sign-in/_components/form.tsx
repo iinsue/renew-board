@@ -27,7 +27,7 @@ export const SignInForm = () => {
   const [isPending, startTransition] = useTransition();
   const [isVisible, setIsVisible] = useState(false);
 
-  const form = useForm({
+  const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       email: "",
