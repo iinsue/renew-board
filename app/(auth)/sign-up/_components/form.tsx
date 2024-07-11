@@ -136,13 +136,14 @@ export const SignUpForm = () => {
           />
         </div>
         <div className="mt-4 text-sm">
-          <Button className="my-4 w-full" disabled={isPending}>
+          <Button className="my-4 w-full" disabled={isPending} type="submit">
             {isPending && <Loader2 className="mr-2 size-4 animate-spin" />}
             회원가입
           </Button>
           <div className="text-center text-slate-500">
             이미 계정이 있으신가요?&nbsp;
             <Button
+              type="button"
               disabled={isPending}
               variant="link"
               className="h-full p-1 text-slate-500 hover:text-slate-800"
