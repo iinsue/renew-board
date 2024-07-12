@@ -24,12 +24,19 @@ import { cn } from "@/lib/utils";
 
 export const SignUpForm = () => {
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
+
   const [isVisible, setIsVisible] = useState(false);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: { email: "", name: "", password: "" },
   });
+
+  // 로딩처리
+  const [isLoading, startTransition] = useTransition();
+  const [isRoutePending, startRouteTransition] = useTransition();
+
+  // 로그인 혹은 회원가입 클릭 시 폼 및 버튼 비활성화 용도
+  const isPending = isLoading || isRoutePending;
 
   // 입력 폼 에러 확인
   const { errors } = useFormState({ control: form.control });
@@ -44,6 +51,11 @@ export const SignUpForm = () => {
         toast.error(response.error, { id: "sign-up" });
       }
     });
+  };
+
+  // 로그인 클릭 시
+  const onSignUpClick = () => {
+    startRouteTransition(() => router.push("/sign-in"));
   };
 
   return (
@@ -137,7 +149,7 @@ export const SignUpForm = () => {
         </div>
         <div className="mt-4 text-sm">
           <Button className="my-4 w-full" disabled={isPending} type="submit">
-            {isPending && <Loader2 className="mr-2 size-4 animate-spin" />}
+            {isLoading && <Loader2 className="mr-2 size-4 animate-spin" />}
             회원가입
           </Button>
           <div className="text-center text-slate-500">
@@ -147,7 +159,7 @@ export const SignUpForm = () => {
               disabled={isPending}
               variant="link"
               className="h-full p-1 text-slate-500 hover:text-slate-800"
-              onClick={() => router.push("/sign-in")}
+              onClick={onSignUpClick}
             >
               로그인
             </Button>
