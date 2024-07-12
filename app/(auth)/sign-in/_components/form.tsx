@@ -24,9 +24,6 @@ import { Eye, EyeOff, Loader2 } from "lucide-react";
 
 export const SignInForm = () => {
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
-  const [isVisible, setIsVisible] = useState(false);
-
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -35,6 +32,17 @@ export const SignInForm = () => {
     },
   });
 
+  // 비밀번호 눈 아이콘
+  const [isVisible, setIsVisible] = useState(false);
+
+  // 로딩처리
+  const [isLoading, startTransition] = useTransition();
+  const [isRoutePending, startRouteTransition] = useTransition();
+
+  // 로그인 혹은 회원가입 클릭 시 폼 및 버튼 비활성화 용도
+  const isPending = isLoading || isRoutePending;
+
+  // 로그인 클릭 시
   const onSubmit = (values: z.infer<typeof FormSchema>) => {
     startTransition(async () => {
       const response = await signInAction(values);
@@ -42,6 +50,11 @@ export const SignInForm = () => {
         toast.error(response.error, { id: "sign-in" });
       }
     });
+  };
+
+  // 회원가입 클릭 시
+  const onSignUpClick = () => {
+    startRouteTransition(() => router.push("/sign-up"));
   };
 
   return (
@@ -75,8 +88,9 @@ export const SignInForm = () => {
                     <FormLabel className="text-slate-700">비밀번호</FormLabel>
                     <Button
                       type="button"
-                      className="ml-auto flex h-auto p-0 text-xs text-slate-500 underline underline-offset-4 hover:text-slate-800"
                       variant="link"
+                      disabled={isPending}
+                      className="ml-auto flex h-auto p-0 text-xs text-slate-500 underline underline-offset-4 hover:text-slate-800"
                     >
                       비밀번호를 잊으셨나요?
                     </Button>
@@ -123,7 +137,7 @@ export const SignInForm = () => {
           </div>
           <div className="grid gap-2">
             <Button className="mt-8 w-full" disabled={isPending} type="submit">
-              {isPending && <Loader2 className="mr-2 size-4 animate-spin" />}
+              {isLoading && <Loader2 className="mr-2 size-4 animate-spin" />}
               로그인
             </Button>
             <Button
@@ -131,7 +145,7 @@ export const SignInForm = () => {
               className="w-full"
               disabled={isPending}
               variant="outline"
-              onClick={() => router.push("/sign-up")}
+              onClick={onSignUpClick}
             >
               회원가입
             </Button>
