@@ -13,6 +13,7 @@ export async function POST(req: Request) {
 
     await db.post.create({
       data: {
+        title:body.title,
         content: body.content,
         authorId: user.id!,
       },

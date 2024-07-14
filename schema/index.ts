@@ -14,3 +14,12 @@ export const SignUpFormSchema = z.object({
   name: z.string().trim().min(1, { message: "이름을 입력하세요." }),
   password: z.string().trim().min(1, { message: "비밀번호를 입력하세요." }),
 });
+
+export type PostType = {
+  id: string;
+  title: string;
+  content: string;
+  authorId: string;
+  createdAt: string;
+  updatedAt: string;
+};

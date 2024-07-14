@@ -5,14 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
-
-type Post = {
-  id: string;
-  content: string;
-  authorId: string;
-  createdAt: string;
-  updatedAt: string;
-};
+import { Post } from "@prisma/client";
 
 export const PostListComponent = () => {
   const router = useRouter();
@@ -40,7 +33,7 @@ export const PostListComponent = () => {
           className="overflow-hidden"
           variant="outline"
         >
-          {post.content}
+          {post.title}
         </Button>
       ))}
     </>

@@ -3,7 +3,6 @@
 import * as z from "zod";
 import axios from "axios";
 import { toast } from "sonner";
-import { useState } from "react";
 import { EditorState } from "lexical";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -26,24 +25,17 @@ export const TextEditor = () => {
       content: "",
     },
   });
-  const [editorState, setEditorState] = useState<string | null>(null);
 
-  /*   const onChange = (editorState: EditorState) => {
-    setEditorState(JSON.stringify(editorState.toJSON()));
-  };
-
-  const onClick = async () => {
+  const onSubmit = async (values: z.infer<typeof FormSchema>) => {
+    const { title, content } = values;
     const response = await axios.post("/api/post", {
-      content: editorState,
+      title,
+      content,
     });
     if (response.status === 200) {
       toast.success("게시글이 등록되었습니다.", { id: "board" });
       router.replace("/board");
     }
-  }; */
-
-  const onSubmit = (values: z.infer<typeof FormSchema>) => {
-    console.log("submit value", values);
   };
 
   return (
