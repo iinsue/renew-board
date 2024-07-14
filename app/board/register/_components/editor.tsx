@@ -11,11 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { LexicalEditor } from "@/components/common/lexical/editor";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-
-const FormSchema = z.object({
-  title: z.string().min(1, "제목을 입력하세요."),
-  content: z.string().min(1, "내용을 입력하세요."),
-});
+import { PostFormSchema as FormSchema } from "@/schema";
 
 export const TextEditor = () => {
   const router = useRouter();

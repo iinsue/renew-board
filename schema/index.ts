@@ -15,6 +15,11 @@ export const SignUpFormSchema = z.object({
   password: z.string().trim().min(1, { message: "비밀번호를 입력하세요." }),
 });
 
+export const PostFormSchema = z.object({
+  title: z.string().min(1, "제목을 입력하세요."),
+  content: z.string().min(1, "내용을 입력하세요."),
+});
+
 export type PostType = {
   id: string;
   title: string;
