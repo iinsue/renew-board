@@ -18,14 +18,12 @@ type Props<TData> = {
   table: TableProps<TData>;
   className?: string;
   onRowClick?: (row: Row<TData>) => void;
-  placeholder?: string;
 };
 
 export function DataTable<TData>({
   table,
   className,
   onRowClick,
-  placeholder,
 }: Props<TData>) {
   // 빈 테이블 체크
   const isTableEmpty = table.getRowModel().rows.length === 0;
