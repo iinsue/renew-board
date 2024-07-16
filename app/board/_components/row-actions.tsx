@@ -18,7 +18,11 @@ export function TableRowActions({ row }: Props) {
 
   return (
     <>
-      <Button onClick={onClick} className="h-full w-full p-1" variant="outline">
+      <Button
+        onClick={onClick}
+        className="h-full w-[100px] p-1"
+        variant="outline"
+      >
         상세
       </Button>
     </>

@@ -48,6 +48,7 @@ export const TextEditor = () => {
                     placeholder="제목을 입력하세요."
                     type="text"
                     disabled={false}
+                    maxLength={80}
                     {...field}
                   />
                 </FormControl>
