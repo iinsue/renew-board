@@ -18,12 +18,14 @@ export const postColumns: ColumnDef<PostType>[] = [
         locale: ko,
       });
 
-      return <div className="flex w-full justify-end">{date}</div>;
+      return <div className="flex justify-end">{date}</div>;
     },
+    size: 80,
   },
   {
     id: "action",
     header: () => <div className="flex justify-center">상세페이지</div>,
     cell: ({ row }) => <TableRowActions row={row} />,
+    size: 80,
   },
 ];

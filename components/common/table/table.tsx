@@ -6,6 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { cn } from "@/lib/utils";
 import {
   Cell,
   flexRender,
@@ -46,13 +47,18 @@ export function DataTable<TData>({
   if (isTableEmpty) return <div>Empty...</div>;
 
   return (
-    <Table>
+    <Table className="rounded-md bg-white lg:w-[1000px]">
       <TableHeader>
         {table.getHeaderGroups().map((headerGroup) => (
           <TableRow key={headerGroup.id}>
             {headerGroup.headers.map((header) => {
+              const size = header.column.getSize();
               return (
-                <TableHead key={header.id} colSpan={header.colSpan}>
+                <TableHead
+                  key={header.id}
+                  colSpan={header.colSpan}
+                  className={cn("p-2", `w-[${size}px]`)}
+                >
                   {flexRender(
                     header.column.columnDef.header,
                     header.getContext(),
@@ -68,8 +74,12 @@ export function DataTable<TData>({
           return (
             <TableRow key={row.id}>
               {row.getVisibleCells().map((cell) => {
+                const size = cell.column.getSize();
                 return (
-                  <TableCell key={cell.id}>
+                  <TableCell
+                    key={cell.id}
+                    className={cn("p-2", `w-[${size}px]`)}
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 );

@@ -28,8 +28,6 @@ export const PostListComponent = () => {
 
   return (
     <>
-      <div>PostListComponent</div>
-
       <DataTable table={table} />
     </>
   );
